@@ -1,0 +1,55 @@
+{
+"id": "184b31f8-ecd8-ecf1-accd-be6462ecc321",
+"name": "Export jobs for Ray",
+"description": "Export all job data",
+"order": [
+"ee1b7b8e-bfd6-2ff4-c863-02f7711b50de",
+"1da75452-4248-3bc0-3e9b-fc6e14a1f055"
+],
+"folders": [ ],
+"timestamp": 1463767813228,
+"owner": "322924",
+"public": false,
+"requests": [
+{
+"id": "1da75452-4248-3bc0-3e9b-fc6e14a1f055",
+"headers": "Authorization: Token da4e902df22a4d1d9f64eb42c0511a35\nContent-Type: application/json; charset=utf-8\nAccept: application/json\n",
+"url": "{{url}}/job/{{job_uuid}}",
+"preRequestScript": "",
+"pathVariables": [ ],
+"method": "GET",
+"data": [ ],
+"dataMode": "raw",
+"version": 2,
+"tests": "",
+"currentHelper": "normal",
+"helperAttributes": [ ],
+"time": 1475845008426,
+"name": "Update activity with updated custom field values",
+"description": "",
+"collectionId": "184b31f8-ecd8-ecf1-accd-be6462ecc321",
+"responses": [ ],
+"rawModeData": "{{customFieldData}}"
+},
+{
+"id": "ee1b7b8e-bfd6-2ff4-c863-02f7711b50de",
+"headers": "Authorization: Token da4e902df22a4d1d9f64eb42c0511a35\nContent-Type: application/json; charset=utf-8\nAccept: application/json\n",
+"url": "{{url}}/job/?start=1970-01-01&end=2050-01-01&pageSize={{pageSize}}&page={{page}}",
+"preRequestScript": "var thisPage = environment.page; if(environment.job_counter >= 100) { postman.setEnvironmentVariable('page', ++thisPage); postman.setEnvironmentVariable('job_counter,0); }",
+"pathVariables": [ ],
+"method": "GET",
+"data": [ ],
+"dataMode": "raw",
+"version": 2,
+"tests": "var jsonData = JSON.parse(responseBody); var finished = environment.finished; var pageSize = environment.pageSize; var thisPage = parseInt(environment.page); var jobCount = environment.job_counter; var count = jsonData.count; postman.setEnvironmentVariable('countcount', count); tests['on Correct Page'] = environment.job_counter <= (1 + thisPage)*100 ; tests['Total job count not reached'] = parseInt(jobCount) +1 < count; postman.setEnvironmentVariable('finished', finished); tests['items array not empty'] = Object.keys(jsonData.items).length > 0; tests['NOT finished and still going through iterations'] = finished == 0; var uuid = JSON.parse(responseBody).items[jobCount].uuid; postman.clearEnvironmentVariable('job_uuid'); postman.setEnvironmentVariable('job_uuid', uuid); jobCount++; postman.setEnvironmentVariable('job_counter', jobCount); if (thisPage*pageSize + jobCount == count) { postman.setEnvironmentVariable('job_counter', 0); postman.setEnvironmentVariable('page', 0); postman.setEnvironmentVariable('finished', 1); }",
+"currentHelper": "normal",
+"helperAttributes": [ ],
+"time": 1476785615996,
+"name": "Get all jobs",
+"description": "",
+"collectionId": "184b31f8-ecd8-ecf1-accd-be6462ecc321",
+"responses": [ ],
+"rawModeData": "{{customFieldData}}"
+}
+]
+}
